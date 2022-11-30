@@ -1,0 +1,7 @@
+{
+  "name": "tte-grocery-list",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
