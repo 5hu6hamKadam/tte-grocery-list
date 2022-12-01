@@ -13,31 +13,8 @@ export interface IGrocery {
   providedIn: 'root',
 })
 export class GroceryService {
-  public activeGrocery: IGrocery = {
-    _id: '1',
-    date: new Date().toISOString(),
-    title: 'Sample grocery',
-    productList: [
-      {
-        title: 'Sugar',
-        unit: 'kg',
-        minPrice: 20,
-        quantity: 1,
-      },
-      {
-        title: 'Oil',
-        unit: 'l',
-        minPrice: 20,
-        quantity: 20,
-      },
-      {
-        title: 'Banana',
-        unit: 'dozen',
-        minPrice: 20,
-        quantity: 1,
-      },
-    ],
-  };
+  public activeGrocery!: IGrocery;
+
   constructor(private toastController: ToastController) {}
 
   public async addProduct(product: IProduct) {

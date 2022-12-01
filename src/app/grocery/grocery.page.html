@@ -4,6 +4,7 @@
       [(ngModel)]="searchText"
       (ionChange)="getSearchedProduct()"
     ></ion-searchbar>
+    <ion-button (click)="save()" fill="clear"> Save </ion-button>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -91,7 +92,7 @@
       </ion-header>
       <ion-content class="ion-padding">
         <ion-item>
-          <ion-label position="stacked">Title</ion-label>
+          <ion-label position="floating">Title</ion-label>
           <ion-input
             type="text"
             placeholder="Your name"
@@ -104,6 +105,13 @@
             <ion-radio slot="start" [value]="unit"></ion-radio>
           </ion-item>
         </ion-radio-group>
+        <ion-item>
+          <ion-label position="floating">Min Price</ion-label>
+          <ion-input
+            type="number"
+            [(ngModel)]="newProduct.minPrice"
+          ></ion-input>
+        </ion-item>
       </ion-content>
     </ng-template>
   </ion-modal>

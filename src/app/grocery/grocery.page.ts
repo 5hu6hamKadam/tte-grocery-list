@@ -1,3 +1,4 @@
+import { StorageService } from './../services/storage.service';
 import { IProduct, ProductService } from './../services/product.service';
 import { GroceryService, IGrocery } from './../services/grocery.service';
 import { Component, OnInit } from '@angular/core';
@@ -15,9 +16,11 @@ export class GroceryPage implements OnInit {
   public newProduct!: IProduct;
   public isModelOpen = false;
   public units = ['kg', 'gm', 'l', 'ml', 'dozen', 'units'];
+
   constructor(
     private groceryService: GroceryService,
-    private productService: ProductService
+    private productService: ProductService,
+    private storageService: StorageService
   ) {
     this.grocery = this.groceryService.activeGrocery;
   }
@@ -25,11 +28,13 @@ export class GroceryPage implements OnInit {
   ngOnInit() {}
 
   public getTotalPrice() {
-    return this.grocery.productList.reduce(
-      (acc, i) =>
-        acc +
-        ((i.quantity && i.currentPrice && i.quantity * i.currentPrice) || 0),
-      0
+    return (
+      this.grocery.productList?.reduce(
+        (acc, i) =>
+          acc +
+          ((i.quantity && i.currentPrice && i.quantity * i.currentPrice) || 0),
+        0
+      ) || 0
     );
   }
 
@@ -67,5 +72,13 @@ export class GroceryPage implements OnInit {
 
   public addProduct() {
     this.productService.addProduct(this.newProduct);
+    this.newProduct = {
+      title: '',
+      unit: 'kg',
+    };
+  }
+
+  public save() {
+    this.storageService.save();
   }
 }

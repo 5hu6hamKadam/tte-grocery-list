@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ToastController } from '@ionic/angular';
 
 export interface IProduct {
   title: string;
@@ -46,7 +47,7 @@ export class ProductService {
       quantity: 1,
     },
   ];
-  constructor() {}
+  constructor(private toastController: ToastController) {}
 
   public getSearchedProduct(query: string) {
     return (
@@ -56,12 +57,29 @@ export class ProductService {
     );
   }
 
-  public addProduct(product: IProduct) {
+  public async addProduct(product: IProduct) {
     const productIndex = this.products.findIndex(
       (p) => p.title === product.title
     );
     if (productIndex < 0) {
       this.products.push(product);
+      const toast = await this.toastController.create({
+        message: 'Added new Product',
+        duration: 1500,
+        position: 'bottom',
+        color: 'success',
+      });
+
+      await toast.present();
+    } else {
+      const toast = await this.toastController.create({
+        message: 'Product already present in list!',
+        duration: 1500,
+        position: 'bottom',
+        color: 'danger',
+      });
+
+      await toast.present();
     }
   }
 }
