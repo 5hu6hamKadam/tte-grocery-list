@@ -1,0 +1,110 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-searchbar
+      [(ngModel)]="searchText"
+      (ionChange)="getSearchedProduct()"
+    ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list *ngIf="!searchText.length" lines="full" mode="ios">
+    <ion-list-header>
+      <ion-label>{{grocery.title}}</ion-label>
+      <ion-label class="ion-text-end ion-margin-end"
+        >{{getTotalPrice()}} ₹</ion-label
+      >
+    </ion-list-header>
+    <ion-item-sliding *ngFor="let product of grocery.productList">
+      <ion-item>
+        <ion-checkbox
+          slot="start"
+          [checked]="product.isPurchased"
+        ></ion-checkbox>
+        <div class="ion-padding-vertical">
+          <ion-label>
+            <h2>{{product.title}}</h2>
+            <p>Min: {{product.minPrice}} ₹/{{product.unit}}</p>
+          </ion-label>
+          <ion-item class="quantity ion-no-padding">
+            <ion-label slot="start"><p>Qty:</p></ion-label>
+            <ion-input
+              [(ngModel)]="product.quantity"
+              class="w-4 ion-no-padding"
+              type="number"
+            ></ion-input>
+          </ion-item>
+          <ion-item class="quantity ion-no-padding">
+            <ion-label slot="start"><p>Price:</p></ion-label>
+            <ion-input
+              [(ngModel)]="product.currentPrice"
+              class="w-4 ion-no-padding"
+              type="number"
+            ></ion-input>
+          </ion-item>
+        </div>
+        <ion-label slot="end" class="ion-text-center">
+          <h1>
+            {{product.quantity && product.currentPrice && product.quantity *
+            product.currentPrice || 0 }} ₹
+          </h1>
+          <p>Total</p>
+        </ion-label>
+      </ion-item>
+      <ion-item-options>
+        <ion-item-option color="danger" (click)="onProductDelete(product)"
+          >Delete</ion-item-option
+        >
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-list *ngIf="searchText.length">
+    <ion-item
+      *ngFor="let product of searchedProducts"
+      (click)="onProductAdd(product)"
+    >
+      <ion-label>{{product.title}}</ion-label>
+    </ion-item>
+    <ion-button
+      *ngIf="!searchedProducts.length "
+      expand="block"
+      fill="clear"
+      shape="round"
+      (click)="openModel()"
+    >
+      Add new
+    </ion-button>
+  </ion-list>
+
+  <ion-modal [isOpen]="isModelOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="closeModel()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Create Product</ion-title>
+          <ion-buttons slot="end" (click)="addProduct()">
+            <ion-button [strong]="true">Add</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label position="stacked">Title</ion-label>
+          <ion-input
+            type="text"
+            placeholder="Your name"
+            [(ngModel)]="newProduct.title"
+          ></ion-input>
+        </ion-item>
+        <ion-radio-group [(ngModel)]="newProduct.unit">
+          <ion-item *ngFor="let unit of units">
+            <ion-label>{{unit}}</ion-label>
+            <ion-radio slot="start" [value]="unit"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

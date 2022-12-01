@@ -1,0 +1,11 @@
+.mr-auto {
+  margin-right: auto;
+}
+.w-4 {
+  width: 4rem;
+}
+::ng-deep {
+  .quantity {
+    --min-height: 0.8rem !important;
+  }
+}
